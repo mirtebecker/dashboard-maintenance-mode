@@ -4,34 +4,35 @@
 if( isset($_POST['function']) ) {
 	switch( $_POST['function'] ) {
 		case 'Activate':
-		activate();
+		dmm_activate();
 		break;
 		case 'Deactivate':
-		deactivate();
+		dmm_deactivate();
 		break;
 	}
 }
 
-$mypath = ABSPATH;
+$path = ABSPATH;
+		
+// Activate 
+// Check if .maintenance excists, if not change .notmaintenance to .maintenance
+function dmm_activate() {
+	global $path;
+	$notmaintenance = $path.'../../../.notmaintenance';
 	
-// Activate: 
-// Check if .maintenance excists, if not (maintenance mode is off), change .notmaintenance to .maintenance (maintenance mode is on).
-function activate() {
-	global $mypath;
-	echo $mypath;
-
-	$notmaintenance = $mypath.'../../../.notmaintenance';
 	if (file_exists($notmaintenance)) {
-		rename($mypath.'../../../.notmaintenance', $mypath.'../../../.maintenance');
+		rename($path.'../../../.notmaintenance', $path.'../../../.maintenance');
 	}
 }
 
-// Deactivate: 
-// Check if .maintenance excists, if so (maintenance mode is on), change .maintenance to .notmaintenance (maintenance mode is off).
-function deactivate() {
-	$maintenance = $mypath.'../../../.maintenance';
+// Deactivate
+// Check if .maintenance excists, if so change .maintenance to .notmaintenance
+function dmm_deactivate() {
+	global $path;
+	$maintenance = $path.'../../../.maintenance';
+	
 	if (file_exists($maintenance)) {
-		rename($mypath.'../../../.maintenance',  $mypath.'../../../.notmaintenance');
+		rename($path.'../../../.maintenance',  $path.'../../../.notmaintenance');
 	}
 }
 
